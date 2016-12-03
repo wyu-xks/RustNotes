@@ -1,0 +1,112 @@
+---
+title: Android NDK 初步
+date: 2016-06-14 15:08:16
+category: Android_note
+tag: [NDK]
+toc: true
+---
+
+* 开发环境： win7 64，Android Studio 2.1
+
+需要工具：NDK，Cygwin
+
+### 使用 SDK Manager 配置安装 NDK
+
+添加系统环境变量 `G:\SDK\ndk-bundle;G:\SDK\platform-tools`
+
+下载并安装Cygwin：https://cygwin.com/install.html
+
+Cygwin 安装NDK需要的工具包（如果第一次安装时没有选择工具包，可以再次启动安装）：  
+make, gcc, gdb, mingw64-x86_64-gcc, binutils
+![tools](https://raw.githubusercontent.com/RustFisher/RustNotes/master/Android_note/pics/Cygwin_tools.png)
+
+配置`G:\soft\Cygwin\home\Administrator\.bashrc`，添加下面的指令，使用英文界面。
+```
+export LANG='en_US'
+export LC_ALL='en_US.GBK'
+```
+配置text选项，在option里的text可设置。  
+可以在`G:\soft\Cygwin\home\Administrator\.minttyrc`中看到。
+
+```
+Locale=zh_CN
+Charset=GBK
+```
+设置完字体后可以避免中文乱码。
+
+配置 `G:\soft\Cygwin\home\Administrator\.bash_profile`
+
+```
+NDK=/cygdrive/G/SDK/ndk-bundle/ndk-build.cmd
+export NDK
+```
+
+在Cygwin中查找NDK位置，可以看到在SDK目录里面
+
+```bash
+Administrator@rust-PC /cygdrive/g/soft/Cygwin/home/Administrator
+$ echo $NDK
+/cygdrive/G/SDK/ndk-bundle/ndk-build.cmd
+```
+
+#### 操作示例NDK工程
+生成一次试试。从github上获取android-ndk-android-mk，进入hello-jni工程。
+
+```bash
+Administrator@rust-PC /cygdrive/g/rust_proj/android-ndk-android-mk/hello-jni
+$ ndk-build.cmd
+# 输出很多信息
+```
+
+编译成功后，自动生成一个libs目录，编译生成的.so文件放在里面。
+
+```
+Administrator@rust-PC /cygdrive/g/rust_proj/NDKTest/app/src/main
+$ ndk-build.cmd
+[armeabi] Install        : librust_ndk.so => libs/armeabi/librust_ndk.so
+# 进入java目录，编译.h文件
+Administrator@rust-PC /cygdrive/g/rust_proj/NDKTest/app/src/main/java
+$ javah com.rustfisher.ndktest.HelloJNI
+# 会生成一个.h文件
+```
+将它复制到jni文件夹下；这个就是JNI层的代码。
+
+##### 使用C/C++实现JNI
+
+遇到错误： Error:Execution failed for task ':app:compileDebugNdk'.
+> Error: NDK integration is deprecated in the current plugin.  Consider trying the new experimental plugin.  For details, see http://tools.android.com/tech-docs/new-build-system/gradle-experimental.  Set "android.useDeprecatedNdk=true" in gradle.properties to continue using the current NDK integration.
+
+解决办法：在`app\build.gradle`文件中添加   
+```
+    sourceSets.main {
+        jniLibs.srcDir 'src/main/libs'
+        jni.srcDirs = [] //disable automatic ndk-build call
+    }
+```
+
+文件有3种：接口文件`.h`； 实现文件`.c`，注意与前面的`.h`文件同名； `.h`与`.c`生成的库文件`.so`
+
+##### 操作步骤小结
+From Java to C/C++  
+Step 1 定义Java接口文件，里面定义好native方法。   
+Step 2 javah生成.h接口文件 。  
+Step 3 复制.h文件的文件名，编写C/C++文件。注意要实现.h中的接口。  
+
+### NDK遇到的问题与注意事项
+
+##### 文件关联问题
+
+写cpp源文件的时候，忘记include头文件。产生`java.lang.UnsatisfiedLinkError: No implementation found for` 之类的错误
+stackoverflow上有关于`Android NDK C++ JNI (no implementation found for native…)`的问题。
+
+##### NDK本地对象数量溢出问题 `Local ref table overflow `
+NDK本地只允许持有512个本地对象，return后会销毁这些对象。必须注意，在循环中创建的本地对象要在使用后销毁掉。
+
+```cpp
+env->DeleteLocalRef(local_ref);// local_ref 是本地创建的对象
+```
+
+##### 调用Java方法时，注意指定返回值
+`env->CallBooleanMethod(resArrayList,arrayList_add, javaObject);` ArrayList的add方法返回Boolean
+
+参考：https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html

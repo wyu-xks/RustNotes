@@ -1,0 +1,37 @@
+0.  lsusb
+    add qcomcomm usb
+    add google usb
+    add file  /etc/udev/.....
+
+
+1. adb reboot bootloader
+2. fastboot devices
+3.  fastboot flash partition E:\Project-ABC\ProjectName\image_number\1118\gpt_both0.bin
+    fastboot flash tz E:\Project-ABC\ProjectName\image_number\1118\tz.mbn
+    fastboot flash sbl1 E:\Project-ABC\ProjectName\image_number\1118\sbl1.mbn
+    fastboot flash rpm E:\Project-ABC\ProjectName\image_number\1118\rpm.mbn
+    fastboot flash hyp E:\Project-ABC\ProjectName\image_number\1118\hyp.mbn
+    fastboot flash modem E:\Project-ABC\ProjectName\image_number\1118\NON-HLOS.bin
+    fastboot erase boot
+    fastboot flash aboot E:\Project-ABC\ProjectName\image_number\1118\emmc_appsboot.mbn
+
+
+    fastboot flash boot E:\Project-ABC\ProjectName\image_number\1118\boot.img
+    fastboot flash system E:\Project-ABC\ProjectName\image_number\1118\system.img
+    fastboot flash persist E:\Project-ABC\ProjectName\image_number\1118\persist.img
+    fastboot flash userdata E:\Project-ABC\ProjectName\image_number\1118\userdata.img
+    fastboot flash cache E:\Project-ABC\ProjectName\image_number\1118\cache.img
+    fastboot flash recovery E:\Project-ABC\ProjectName\image_number\1118\recovery.img
+
+4.  fastboot reboot
+	等一会
+
+5. 刷掉modemst1 modemst2 fsg
+   adb reboot bootloader
+   fastboot erase modemst1 erase modemst2 erase fsg
+   fastboot reboot
+
+如果没有权限，可以su，进入root用户，然后adb kill-server重启adb
+fastboot -w
+
+adb shell setprop persist.radio.multisim.config dsds
