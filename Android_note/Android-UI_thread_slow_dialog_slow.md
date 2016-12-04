@@ -1,6 +1,7 @@
 ---
 title: Android - 点击弹出dialog响应太慢，更新界面出现卡顿
 date: 2016-10-26 07:47:12
+category: Android_note
 tag: [Android_UI]
 toc: true
 ---

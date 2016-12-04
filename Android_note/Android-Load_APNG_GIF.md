@@ -8,7 +8,23 @@ toc: true
 
 主要记的是第三方库的使用。
 
-###### Load GIF
+#### 使用Glide加载图片
+添加依赖
+```
+    compile 'com.github.bumptech.glide:glide:3.7.0'   // glide
+    compile 'jp.wasabeef:glide-transformations:2.0.1' // 另外的库
+```
+第二个库是用来添加图片效果的，例如添加高斯糊化效果
+
+例如下面加载一个高斯糊化后的图片
+```java
+    Glide.with(getApplicationContext())
+            .load(R.drawable.work_bg)
+            .bitmapTransform(new BlurTransformation(getApplicationContext(), 23, 4))
+            .into(view1);
+```
+
+#### Load GIF
 尝试把GIF解成PNG图片，然后做成帧动画。结果图片太多，帧动画内存溢出
 >java.lang.OutOfMemoryError: Failed to allocate a 14080012 byte allocation with 12451176 free bytes and 11MB until OOM
 
@@ -26,7 +42,7 @@ Glide.with(this).load(R.drawable.float_island)
 ```
 图像大小可以用dp单位来设定。很好地解决了问题。性能上还要测试一下。
 
-###### Load APNG
+#### Load APNG
 很可惜的是Android目前对apng支持不好。
 
 使用的库是： https://github.com/sahasbhop/apng-view  

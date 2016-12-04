@@ -4,6 +4,8 @@ date: 2015-10-30 15:09:36
 category: Android_note
 tag: [Android]
 ---
+
+
 adb shell进入机器
 
 ```

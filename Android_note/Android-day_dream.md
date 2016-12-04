@@ -130,4 +130,4 @@ public class MyDayDream extends DreamService {
 ```
 在Settings-Display-Daydream中可以找到新增的选项
 
-![](https://raw.githubusercontent.com/RustFisher/imagesRaw/master/demo_images/daydream_settings.png)
+![](https://raw.githubusercontent.com/RustFisher/RustNotes/master/Android_note/pics/daydream_settings.png)

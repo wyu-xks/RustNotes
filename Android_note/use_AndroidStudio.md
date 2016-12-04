@@ -13,8 +13,6 @@ ubuntu14.04
 
 此时java -version 还是open jdk7   不影响
 
-[TOC]
-
 ## android studio很卡解决方法
 
 每次升级/安装 Android Studio 之后最好都修改一下这个参数：到 Android Studio 安装目录，找到 bin/studio.vmoptions（文件名可能因操作系统而不同，但大同小异），然后把 -xmx 后面的数字改大一点，比如 2048m 或4096m。
@@ -150,3 +148,19 @@ Settings>Build,Execution,Deployment>Build Tools>Gradle里面使用了
 录屏后配合迅雷影音的生成GIF功能，就能很方便地得到GIF图
 
 ![rec](https://raw.githubusercontent.com/RustFisher/RustNotes/master/Android_note/pics/as_rec.png)  
+
+## 处理 android studio 卡在 build project info.. 的方法
+win7， Android Studio 2.3  
+卡在这一步，一般是下载gradle太慢。那么我们去下载gradle的离线包。先关闭AS。  
+打开`C:\Users\Administrator\.gradle\wrapper\dists`，可以看到当前正在使用的gradle版本  
+假设正在使用`gradle-3.3-all`，进入这个目录可以看到一个文件夹，将下载好的`gradle-3.3-all.zip`
+放进去。启动AS即可。
+
+## gradle本地缓存的配置
+win7中，gradle默认缓存在C盘当前用户的目录中，例如`C:\Users\Administrator\.gradle`  
+可以通过配置系统变量，来改变缓存位置  
+如果当前.gradle文件夹已经在C盘，可以将它复制到目标路径，例如`G:\gradleRepo\.gradle`  
+在系统变量中增加`GRADLE_USER_HOME`=`G:\gradleRepo\.gradle`
+
+稳妥起见重启计算机即可
+

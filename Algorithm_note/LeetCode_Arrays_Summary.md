@@ -1,8 +1,9 @@
 ---
-title: LeetCode-数组问题小集-Java
+title: LeetCode-数组问题小集
 date: 2014-05-29 22:49:16
 category: Algorithm
 tag: [algorithm,LeetCode]
+toc: true
 ---
 
 ### 数组
@@ -53,6 +54,86 @@ public class RemoveDuplicatesfromSortedArray {
 The order of elements can be changed. It doesn't matter what you leave beyond the new length.
 
 删掉指定的元素，并用后面的元素顶替空出来的位置；
+
+#### 88. Merge Sorted Array
+```
+Given two sorted integer arrays nums1 and nums2, merge nums2 into nums1 as one sorted array.
+Note:
+You may assume that nums1 has enough space (size that is greater or equal to m + n) to hold additional 
+elements from nums2. The number of elements initialized in nums1 and nums2 are m and n respectively.
+```
+
+思路1，用list来存储临时变量。缺点是很慢。  
+
+Java代码
+```java
+    public static void merge(int[] nums1, int m, int[] nums2, int n) {
+        ArrayList<Integer> resList = new ArrayList<>(m + n);
+        int index1 = 0;
+        int index2 = 0;
+        for (int i = 0; i < m + n; i++) {
+            if (index1 < m && index2 < n) {
+                if (nums1[index1] < nums2[index2]) {
+                    resList.add(nums1[index1]);
+                    index1++;
+                } else {
+                    resList.add(nums2[index2]);
+                    index2++;
+                }
+            } else if (index1 < m) {
+                resList.add(nums1[index1]);
+                index1++;
+            } else if (index2 < n) {
+                resList.add(nums2[index2]);
+                index2++;
+            }
+            System.out.print(resList.get(i) + ", ");
+        }
+        for (int i = 0; i < m + n; i++) {
+            nums1[i] = resList.get(i);
+        }
+    }
+```
+
+思路2，注意到num1中有一段元素（m 到 m+n-1）是可以被覆盖掉的。我们可以从那里入手。  
+从num1的后面部分开始覆盖，最后把num2的元素复制进num1来。  
+此法优点是速度快，不占用额外内存。
+
+Java代码
+```java
+    public static void merge(int[] nums1, int m, int[] nums2, int n) {
+        int index1 = m - 1; // nums1 index
+        int index2 = n - 1;
+        int resIndex = m + n - 1;
+        while (index1 >= 0 && index2 >= 0) {
+            nums1[resIndex--] = nums1[index1] > nums2[index2] ? nums1[index1--] : nums2[index2--];
+        }
+        while (index2 >= 0) {
+            nums1[resIndex--] = nums2[index2--];
+        }
+    }
+```
+
+Python代码。注意到结果数组的下标是收到m和n影响的，改变了m和n就是改变了结果数组的下标
+```python
+    def merge(self, nums1, m, nums2, n):
+        """
+        :type nums1: List[int]
+        :type m: int
+        :type nums2: List[int]
+        :type n: int
+        :rtype: void Do not return anything, modify nums1 in-place instead.
+        """
+        while m > 0 and n > 0:
+            if nums1[m - 1] > nums2[n - 1]:
+                nums1[m + n - 1] = nums1[m - 1]
+                m -= 1
+            else:
+                nums1[m + n - 1] = nums2[n - 1]
+                n -= 1
+        if n > 0:
+            nums1[:n] = nums2[:n]
+```
 
 #### 268. Missing Number
 >Given an array containing n distinct numbers taken from 0, 1, 2, ..., n, find the one that is missing from the array.

@@ -4,6 +4,8 @@ date: 2015-10-21 15:09:19
 category: Android_note
 tag: [Android]
 ---
+
+
 Android为多语言适配提供了很大的方便。开发者不需要在代码中进行修改。
 只需要配置xml文件。
 

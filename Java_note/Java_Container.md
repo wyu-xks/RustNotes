@@ -5,8 +5,11 @@ category: Java_note
 tag: [Java]
 toc: true
 ---
-jdk1.7.0_79 ；idea
-Thinking in Java 4th edition
+
+
+* jdk1.7.0_79
+* idea
+* *Thinking in Java 4th edition*
 
 ### 泛型
  -----
@@ -395,28 +398,6 @@ xyz gh ef cd ab
  -----
 可以成为一个Queue实现。
 
-
-输出结果：
-```
-numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-numbers.getFirst(): 0
-numbers.element(): 0
-numbers.peek(): 0
-numbers.remove(): 0
-numbers.removeFirst(): 1
-numbers.poll(): 2
-numbers: [3, 4, 5, 6, 7, 8, 9, 10]
-numbers after addFirst(0): [0, 3, 4, 5, 6, 7, 8, 9, 10]
-numbers after offer(1): [0, 3, 4, 5, 6, 7, 8, 9, 10, 1]
-numbers after addLast(99): [0, 3, 4, 5, 6, 7, 8, 9, 10, 1, 99]
-numbers.removeLast() : 99
-/**********************************************/
-new LinkedList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
-it.previousIndex() == -1
-6 -- 70
-After insert LinkedList: [10, 20, 30, 40, 50, 60, 77, 70, 80, 90, 100]
-em.get(0) == 10
-```
 Java代码：
 ```java
 import java.util.*;
@@ -464,6 +445,28 @@ public class LinkedListFeatures {
         System.out.println("em.get(0) == " + em.get(0));
     }
 }
+```
+
+输出结果：
+```
+numbers: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+numbers.getFirst(): 0
+numbers.element(): 0
+numbers.peek(): 0
+numbers.remove(): 0
+numbers.removeFirst(): 1
+numbers.poll(): 2
+numbers: [3, 4, 5, 6, 7, 8, 9, 10]
+numbers after addFirst(0): [0, 3, 4, 5, 6, 7, 8, 9, 10]
+numbers after offer(1): [0, 3, 4, 5, 6, 7, 8, 9, 10, 1]
+numbers after addLast(99): [0, 3, 4, 5, 6, 7, 8, 9, 10, 1, 99]
+numbers.removeLast() : 99
+/**********************************************/
+new LinkedList: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+it.previousIndex() == -1
+6 -- 70
+After insert LinkedList: [10, 20, 30, 40, 50, 60, 77, 70, 80, 90, 100]
+em.get(0) == 10
 ```
 
 ### Stack

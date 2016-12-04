@@ -5,9 +5,10 @@ category: Android_note
 tag: [Bluetooth]
 toc: true
 ---
+
+
 源码基于 Android L
 
-[TOC]
 
 ## Reference
 

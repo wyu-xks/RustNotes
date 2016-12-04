@@ -5,9 +5,9 @@ category: Java_note
 tag: [Java,Read]
 toc: true
 ---
-Effective Java 2nd edition - Joshua Bloch
 
-[TOC]
+
+Effective Java 2nd edition - Joshua Bloch
 
 ## 1. 考虑用静态工厂方法代替构造器
 静态工厂方法（static factory method），返回类的实例的静态方法；不对应于设计模式中的工厂方法模式

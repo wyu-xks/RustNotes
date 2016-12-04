@@ -5,7 +5,7 @@ category: Android_note
 tag: [Android_UI]
 toc: true
 ---
-最后修改时间：2015-3-6 23:28:24
+
 
 ## 首先创建一个XML文件：
 例如：popup.xml

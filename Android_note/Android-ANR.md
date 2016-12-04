@@ -5,7 +5,6 @@ category: Android_note
 tag: [ANR]
 toc: true
 ---
-[TOC]
 
 ## ANR是什么
 ANR,是“Application Not Responding”的缩写,即“应用程序无响应”。

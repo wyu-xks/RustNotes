@@ -5,9 +5,8 @@ category: Android_note
 tag: [Android_Storage]
 toc: true
 ---
-轻量级关系型数据库。
 
-[TOC]
+Android中的轻量级关系型数据库。
 
 ## SQLite操作
 ### SQLiteOpenHelper是一个抽象类。创建一个帮助类去继承它。
@@ -56,7 +55,7 @@ public class RustDatabaseHelper extends SQLiteOpenHelper {
 
     }
 }
-﻿```
+```
 
 ### 获取数据库
 SQLiteOpenHelper有2个实例方法：
@@ -71,8 +70,8 @@ SQLiteOpenHelper有2个实例方法：
 ```java
     RustDatabaseHelper databaseHelper;
     ......
-        databaseHelper = new RustDatabaseHelper(getApplicationContext(), DATABASE_NAME, null, 1);
-        SQLiteDatabase db = databaseHelper.getWritableDatabase();
+    databaseHelper = new RustDatabaseHelper(getApplicationContext(), DATABASE_NAME, null, 1);
+    SQLiteDatabase db = databaseHelper.getWritableDatabase();
 ```
 
 ### 查找数据
@@ -99,10 +98,10 @@ SQLiteOpenHelper有2个实例方法：
 cursor.getColumnIndex("none") 返回-1的问题，因为构建Cursor时传入的列名称错误
 
 Cursor是结果集游标，用于对结果集进行随机访问。
-使用moveToNext()方法可以将游标从当前行移动到下一行，如果已经移过了结果集的最后一行，返回结果为false，
-否则为true。另外Cursor 还有常用的moveToPrevious()方法
-（用于将游标从当前行移动到上一行，如果已经移过了结果集的第一行，返回值为false，否则为true ）、
-moveToFirst()方法（用于将游标移动到结果集的第一行，如果结果集为空，返回值为false，否则为true ）
+使用moveToNext()方法可以将游标从当前行移动到下一行，如果已经移过了结果集的最后一行，返回结果为false，  
+否则为true。另外Cursor 还有常用的moveToPrevious()方法  
+（用于将游标从当前行移动到上一行，如果已经移过了结果集的第一行，返回值为false，否则为true ）、  
+moveToFirst()方法（用于将游标移动到结果集的第一行，如果结果集为空，返回值为false，否则为true ）  
 和moveToLast()方法（用于将游标移动到结果集的最后一行，如果结果集为空，返回值为false，否则为true ） 。
 
 ### 向数据库中添加数据

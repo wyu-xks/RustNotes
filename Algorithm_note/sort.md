@@ -9,8 +9,6 @@ toc: true
 ***Algorithms***  4th edition by Robert Sedgewick and Kevin Wayne  
 《算法》第四版  网站  http://algs4.cs.princeton.edu/20sorting/
 
-[TOC]
-
 # 排序
 ## 准备工作
 交换方法，供后续调用：
@@ -32,9 +30,12 @@ toc: true
 ```
 
 ## 选择排序 selection
+- 一个游标往右走，不停地找到右部分最小的值并换到左边。
+
 首先，找到数组中最小的那个元素，其次，将其与数组第一个元素交换位置（如果第一个元素就是最小的，那么它自己和自己交换位置）。
 接下来在剩下的元素中寻找最小的元素，与数组第二个元素交换位置，如此反复。
 
+选择排序和冒泡还是有差别的。
 对于长度为N的数组，选择排序需要大约N^2/2次比较和N次交换
 
 代码段：
@@ -54,13 +55,15 @@ toc: true
 运行时间与输入无关；数据移动是最少的，只有最小值才会移动。
 
 ## 插入排序 insertion
+- 特点：游标一步一步向右走，每步遍历游标左边的部分；**交换相邻元素**。
+
 游标从索引为1的位置往右走；对比游标以及游标左边的元素，向左边交换元素；
 从游标到起始点，向左边一位一位地比较并交换元素；  
 小的元素会往左边一位一位地移动；当索引到达右端，排序完成。
 
 对于随机排列的长度为N且主键不重复的数组，平均情况下插入排序需要约N^2/4次比较，
 以及约N^2/4次交换。最坏情况下要约N^2/2次比较和N^2/2次交换。
-最好情况下N-1次比较，0次交换
+最好情况下N-1次比较，0次交换。
 
 插入排序对常见的某些类型的非随机数组很有效。
 
@@ -88,15 +91,16 @@ toc: true
 插入排序对部分有序的数组很有效，选择排序则不然
 
 ## 希尔排序 shell
+- 设定步进值h，利用插入排序。
+
 基于插入排序的快速的排序算法  
 对于大规模乱序数组，插入排序很慢，因为它只会交换相邻的元素，因此元素只能从一端缓慢移动到另一端。
 
-希尔排序的思想是使数组中任意间隔为h的元素都是有序的。这样的数组称为h有序数组。
+希尔排序的思想是：使数组中任意间隔为h的元素都是有序的。这样的数组称为**h有序数组**。
 
 实现希尔排序的一种方法是对每个h，用插入排序将h个子数组独立地排序。
 
-在插入排序中加入一个外循环`while (h >= 1)`，插入排序以h为间隔
-得到一个简洁的希尔排序  
+在插入排序中加入一个外循环`while (h >= 1)`，插入排序以h为间隔；得到一个简洁的希尔排序  
 代码段：
 ```java
     public static void shell_sort(int a[]) {
@@ -106,7 +110,7 @@ toc: true
             h = 3 * h + 1;// 找到最大的h
         }
         while (h >= 1) {
-            for (int i = h; i < N; i++) {
+            for (int i = h; i < N; i+=h) { // 以h为查询间隔
                 for (int j = i; j >= h && less(a[j], a[j - h]); j -= h) {
                     exch(a, j, j - h);// 插入排序
                 }
@@ -117,6 +121,43 @@ toc: true
 ```
 
 希尔排序比插入和选择排序都快得多，并且数组越大优势越大。
+
+Python实现
+```python
+def shell_sort(arr):
+    a_len = len(arr)
+    h = 1
+    while h < a_len / 3:  # 找到最大间隔
+        h = h * 3 + 1
+    print "输入长度 len =", a_len, ", 间隔 h =", h
+    while h > 0:
+        for i in range(h, a_len, h):
+            for j in range(i, h - 1, -h):  # 从i开始往左走  注意边界
+                if arr[j] < arr[j - h]:
+                    t = arr[j]  # exchange
+                    arr[j] = arr[j - h]
+                    arr[j - h] = t
+                print "--> (i=%d,j=%d,h=%d)" % (i, j, h), arr
+        h = h / 3
+
+if __name__ == "__main__":
+    arr1 = [1, 6, 5, 4, 0, 3, 8, 3, 5, 2]
+    print "arr1=", arr1
+    shell_sort(arr1)
+    print "arr1=", arr1
+```
+
+测试输出
+```
+arr1= [1, 6, 5, 4, 0, 3, 8, 3, 5, 2]
+输入长度 len = 10 , 间隔 h = 4
+--> (i=4,j=4,h=4) [0, 6, 5, 4, 1, 3, 8, 3, 5, 2]
+--> (i=8,j=8,h=4) [0, 6, 5, 4, 1, 3, 8, 3, 5, 2]
+--> (i=8,j=4,h=4) [0, 6, 5, 4, 1, 3, 8, 3, 5, 2]
+--> (i=1,j=1,h=1) [0, 6, 5, 4, 1, 3, 8, 3, 5, 2]
+--> # h=1之后，就是插入排序的过程了
+arr1= [0, 1, 2, 3, 3, 4, 5, 5, 6, 8]
+```
 
 ### 理念： 为何要研究算法的设计和性能？
 原因之一：**提升速度来解决其他方式无法解决的问题**
@@ -167,12 +208,66 @@ private static void mergeSort(int a[]) {
 private static void iMergeSort(int a[], int low, int high) {
     if (high <= low) return;
     int mid = low + (high - low) / 2;
-    iMergeSort(a, low, mid);         // 将左半部分排序
-    iMergeSort(a, mid + 1, high);    // 将右半部分排序
+    iMergeSort(a, low, mid);         // 将左半部分排序  左半部分变成有序数组
+    iMergeSort(a, mid + 1, high);    // 将右半部分排序  右半部分变成有序数组
     merge(a, low, mid, high);        // 调用原地归并方法
 }
 ```
 ***命题：对于长度为N的任意数组，自顶向下的归并排序需要1/2NlgN至NlgN此比较***
+
+Python实现
+```python
+def _do_merge(arr, low, mid, high):
+    left = low
+    right = mid + 1
+    temp_origin_arr = [ele for ele in arr]  # Copy list
+    print "merging--", arr
+    for k in range(low, high + 1):
+        if left > mid:
+            arr[k] = temp_origin_arr[right]
+            right += 1
+        elif right > high:
+            arr[k] = temp_origin_arr[left]
+            left += 1
+        elif temp_origin_arr[left] < temp_origin_arr[right]:
+            arr[k] = temp_origin_arr[left]
+            left += 1
+        else:
+            arr[k] = temp_origin_arr[right]
+            right += 1
+
+
+def _help_merge(arr, low, high):
+    if low >= high:
+        return
+    mid = low + (high - low) / 2
+    _help_merge(arr, low, mid)  # 先处理左半部分
+    _help_merge(arr, mid + 1, high)  # 后处理右半部分
+    _do_merge(arr, low, mid, high)
+
+
+def merge_sort_up_down(arr):
+    _help_merge(arr, 0, len(arr) - 1)
+
+if __name__ == "__main__":
+    arr1 = [3, 2, 8, 4, 1, 5, 2]
+    print "arr1=", arr1
+    merge_sort_up_down(arr1)
+    print "arr1=", arr1
+```
+
+Python输出
+```
+arr1= [3, 2, 8, 4, 1, 5, 2]
+merging-- [3, 2, 8, 4, 1, 5, 2]
+merging-- [2, 3, 8, 4, 1, 5, 2]
+merging-- [2, 3, 4, 8, 1, 5, 2]
+merging-- [2, 3, 4, 8, 1, 5, 2]
+merging-- [2, 3, 4, 8, 1, 5, 2]
+merging-- [2, 3, 4, 8, 1, 2, 5]
+arr1= [1, 2, 2, 3, 4, 5, 8]
+```
+可以看出，先对左半部分归并排序成有序数组，再处理右半部分；最后处理全部。
 
 ### 自底向上的归并排序
 先归并微型数组，然后再成对归并得到的子数组。直到将整个数组归并在一起。  
@@ -208,7 +303,7 @@ public static void mergeSortBU(int a[]) {
 分治的排序算法。将一个数组分成两个子数组，两部分分别独立地进行排序。
 快速排序和归并排序是互补的。
 
-一个数字被分为两部分，当两个子数组都有序时，整个数组就有序了。
+一个数组被分为两部分，当两个子数组都有序时，整个数组就有序了。
 
 方法的关键在于切分，这个过程使得数组满足以下三个条件：
 * 对于某个j，a[j]已经排定
@@ -251,6 +346,65 @@ public static void mergeSortBU(int a[]) {
 
 ```
 总是把小的移到a[lo]那边去
+
+快速排序Python实现
+```python
+def _partition_quick(arr, low, high):
+    left = low + 1
+    right = high
+    gap = arr[low]
+    while True:
+        while arr[left] < gap:
+            left += 1
+            if left >= high:
+                break
+        while arr[right] > gap:
+            right -= 1
+            if right <= low:
+                break
+        if left >= right:
+            break
+        t = arr[left]
+        arr[left] = arr[right]
+        arr[right] = t
+        print "quick sorting--(left=%d,right=%d)" % (left, right), arr
+    t = arr[low]
+    arr[low] = arr[right]
+    arr[right] = t
+    print "quick sorting--(left=%d,right=%d)" % (left, right), arr
+    return right
+
+
+def _help_quick_sort(arr, low, high):
+    if low >= high:
+        return
+    par = _partition_quick(arr, low, high)
+    _help_quick_sort(arr, low, par - 1)
+    _help_quick_sort(arr, par + 1, high)
+
+
+def quick_sort(arr):
+    _help_quick_sort(arr, 0, len(arr) - 1)
+
+
+if __name__ == "__main__":
+    arr1 = [3, 2, 8, 4, 1, 5, 2]
+    print "arr1=", arr1
+    quick_sort(arr1)
+    print "arr1=", arr1
+```
+测试输出：
+```
+arr1= [3, 2, 8, 4, 1, 5, 2]
+quick sorting--(left=2,right=6) [3, 2, 2, 4, 1, 5, 8]
+quick sorting--(left=3,right=4) [3, 2, 2, 1, 4, 5, 8]
+quick sorting--(left=4,right=3) [1, 2, 2, 3, 4, 5, 8]
+quick sorting--(left=1,right=0) [1, 2, 2, 3, 4, 5, 8]
+quick sorting--(left=2,right=2) [1, 2, 2, 3, 4, 5, 8]
+quick sorting--(left=5,right=4) [1, 2, 2, 3, 4, 5, 8]
+quick sorting--(left=6,right=5) [1, 2, 2, 3, 4, 5, 8]
+arr1= [1, 2, 2, 3, 4, 5, 8]
+```
 
 ### 性能特点
 快速排序的速度优势在于它的比较次数很少。

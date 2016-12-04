@@ -5,6 +5,8 @@ category: Java_note
 tag: [Java]
 toc: true
 ---
+
+
 如果有Android app开发经验，快速上手Swing不是问题。UI方面有相似的地方。  
 简单的几行代码就能抛出一个框框，记录一下操作过程
 #### 1.先显示一个框框

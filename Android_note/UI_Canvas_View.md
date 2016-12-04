@@ -84,7 +84,7 @@ Android L； Android Studio
 效果：能够自定义圆圈半径和位置；设定点击效果；改变背景颜色
 
 下面是demo图
-点击前: ![1](https://raw.githubusercontent.com/RustFisher/imagesRaw/master/demo_images/circles_rendering1.png) 点击后: ![](https://raw.githubusercontent.com/RustFisher/imagesRaw/master/demo_images/circles_rendering2.png)
+点击前: ![1](https://raw.githubusercontent.com/RustFisher/Rustnotes/master/Android_note/pics/circles_rendering1.png) 点击后: ![](https://raw.githubusercontent.com/RustFisher/Rustnotes/master/Android_note/pics/circles_rendering2.png)
 自定义控件一般要继承View；写出构造方法，并设定属性；复写`onDraw`方法
 并在xml中配置一下
 例子：`OptionCircle.java` `CirclesActivity.java` `activity_circle_choose.xml`

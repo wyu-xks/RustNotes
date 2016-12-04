@@ -4,8 +4,8 @@ date: 2016-05-12 15:09:30
 category: Android_note
 tag: [JAR,Tools]
 ---
-* 2016-5-12
-* Android studio 2.1
+
+IDE    Android studio 2.1
 
 打包jar与混淆全部在 Android studio 中使用gradle完成。  
 混淆的效果并不算太好。后续建议用C++复写算法，打成.so库文件。JNI调用即可。

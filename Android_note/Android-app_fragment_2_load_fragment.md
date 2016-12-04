@@ -5,7 +5,6 @@ category: Android_note
 tag: [Android_UI]
 toc: true
 ---
-[TOC]
 
 加载方法有两种，在xml文件中注册，或者是在Java代码中加载。
 

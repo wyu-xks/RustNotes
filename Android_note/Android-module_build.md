@@ -4,6 +4,7 @@ date: 2015-11-02 15:10:46
 category: Android_note
 tag: [Android_frameworks]
 ---
+
 Android L 源码，编译相关的文件一般在build目录下  
 build/target/product 放了很多mk文件；一般不同的产品会有不同的目录
 

@@ -1,11 +1,59 @@
 ---
-title: LeetCode-计算问题小集-Java
+title: LeetCode-计算问题小集
 date: 2014-05-29 22:29:16
 category: Algorithm
 tag: [algorithm,LeetCode]
 ---
 
-### 计算
+
+```
+1. Two Sum
+7. Reverse Integer
+15. 3Sum
+16. 3Sum Closest
+18. 4Sum
+36. Valid Sudoku
+136. Single Number
+137. Single Number II
+149. Max Points on a Line
+258. Add Digits
+263. Ugly Number
+264. Ugly Number II
+```
+
+#### 1. Two Sum
+```
+Given an array of integers, return indices of the two numbers such that they add up to a specific target.
+You may assume that each input would have exactly one solution, and you may not use the same element twice.
+
+Example:
+Given nums = [2, 7, 11, 15], target = 9,
+Because nums[0] + nums[1] = 2 + 7 = 9,
+return [0, 1].
+```
+
+思路1，时间复杂度O(1)的方法，用空间换时间。将下标存进HashTable中，索引是当前数值与target的差值
+
+Python实现
+```python
+    def twoSum(self, nums, target):
+        """
+        :type nums: List[int]
+        :type target: int
+        :rtype: List[int]
+        """
+        if len(nums) < 2:
+            return False
+        index_dict = dict()
+        for i in range(len(nums)):
+            if nums[i] in index_dict:
+                return [index_dict[nums[i]], i]
+            else:
+                index_dict[target - nums[i]] = i
+```
+
+思路2，时间O(n^2)的方法，使用双游标遍历数组。
+
 #### 7. Reverse Integer
 Reverse digits of an integer.
 Example1: x = 123, return 321
@@ -231,6 +279,73 @@ The Sudoku board could be partially filled, where empty cells are filled with th
         }
         return true;
     }
+```
+
+#### 136. Single Number
+```
+Given an array of integers, every element appears twice except for one. Find that single one.
+
+Note:
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+```
+
+思路1，亦或运算
+
+Python实现
+```python
+    def singleNumber(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        res = 0
+        for i in nums:
+            res = res ^ i
+        return res
+```
+
+#### 137. Single Number II
+```
+Given an array of integers, every element appears three times except for one, which appears exactly once. Find that single one.
+
+Note:
+Your algorithm should have a linear runtime complexity. Could you implement it without using extra memory?
+```
+
+别的数字出现3次。找出只出现了1次的那个数字。
+
+Python代码
+```python
+    def singleNumber2(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        ones = 0
+        twos = 0
+        for i in nums:
+            ones = (ones ^ i) & ~twos
+            twos = (twos ^ i) & ~ones
+        return ones
+```
+
+这类问题的通用解法。
+https://discuss.leetcode.com/topic/22821/an-general-way-to-handle-all-this-sort-of-questions
+```python
+    def single_number(self, nums):
+        """
+        数组中找只出现一次的数字的通用解法
+        :type nums: List[int]
+        :rtype: int
+        """
+        a = 0
+        b = 0
+        for c in nums:
+            ta = (~a & b & c) | (a & ~b & ~c)
+            b = (~a & ~b & c) | (~a & b & ~c)
+            a = ta
+        return a | b
+
 ```
 
 #### 149. Max Points on a Line

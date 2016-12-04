@@ -1,5 +1,5 @@
 ---
-title: Android 连接蓝牙设备注意事项
+title: Android SPP连接蓝牙设备注意事项
 date: 2016-09-07 21:28:33
 category: Android_note
 tag: [Bluetooth]
@@ -44,3 +44,6 @@ public synchronized void stopAllBtThreads(boolean closeSocket) {
 
 注意：如果不断开当前socket而去连接另一台蓝牙设备，是有可能同时接收到多个蓝牙设备的数据
 传输的。只要它们跑在不同的线程中。
+
+在最近的真机实验中（2016-12-29），同一台手机同时能SPP连接7个蓝牙设备。
+7个是系统规定的连接上限。

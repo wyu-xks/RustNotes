@@ -29,37 +29,10 @@ Fragment与其附着的Activity之间的通信，都应该由Activity来完成�
 
 ### 准备布局文件：
 
-liststore.xml用LinearLayout中放置了2个fragment，分别指向2个Fragment文件
-```xml
-    <fragment
-        android:id="@+id/fragment_new"
-        android:name="com.rust.liststore.NewItemFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-    <fragment
-        android:id="@+id/fragment_listview"
-        android:name="com.rust.liststore.ListStoreFragment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
-```
+liststore.xml用LinearLayout中放置了2个fragment，分别指向2个Fragment文件  
 new_item_fragment.xml 中并排放置一个EditText和一个按钮
-```xml
-    <EditText
-        android:id="@+id/edittx_new"
-        android:layout_width="0dp"
-        android:layout_weight="4"
-        android:layout_height="wrap_content"
-        android:hint="@string/hint_new" />
-    <Button
-        android:id="@+id/btn_add_new_item"
-        android:layout_width="0dp"
-        android:layout_weight="1"
-        android:layout_height="wrap_content"
-        android:text="@string/hint_add_new_item"
-        />
-```
 
-`ListStoreFragment.java`
+`ListStoreFragment.java` 使用前面定义的界面
 
 ```java
 public class ListStoreFragment extends ListFragment{

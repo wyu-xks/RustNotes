@@ -71,6 +71,12 @@ $ javah com.rustfisher.ndktest.HelloJNI
 ```
 将它复制到jni文件夹下；这个就是JNI层的代码。
 
+Ubuntu下javah报错。需要添加参数
+
+```
+javah -cp /home/rust/Android/Sdk/platforms/android-25/android.jar:. com.example.LibUtil
+```
+
 ##### 使用C/C++实现JNI
 
 遇到错误： Error:Execution failed for task ':app:compileDebugNdk'.
@@ -110,3 +116,65 @@ env->DeleteLocalRef(local_ref);// local_ref 是本地创建的对象
 `env->CallBooleanMethod(resArrayList,arrayList_add, javaObject);` ArrayList的add方法返回Boolean
 
 参考：https://www3.ntu.edu.sg/home/ehchua/programming/java/JavaNativeInterface.html
+
+##### C++调用C方法
+C++文件中，需要调用C里面的方法。如果未经任何处理，会出现无引用错误
+```
+error: undefined reference to '......
+```
+
+因此在C++文件中涉及到C方法，需要声明。
+例如
+```c++
+#ifdef __cplusplus
+extern "C" {
+#include "c_file_header.h"
+#ifdef __cplusplus
+}
+#endif
+#endif
+// ___ 结束声明
+```
+
+javah生成的JNI头文件中也有extern，可作为参考
+
+### NDK中使用logcat
+配置：Cygwin， NDK 14.1...  
+可以在NDK中使用logcat，方便调试  
+需要在mk文件中添加
+```
+LOCAL_LDLIBS := -L$(SYSROOT)/usr/lib -llog
+```
+
+代码中添加头文件，即可调用logcat的方法
+```c
+#include <android/log.h>
+#define LOG_TAG    "rustApp"
+
+__android_log_write(ANDROID_LOG_VERBOSE, LOG_TAG, "My Log");
+```
+
+此时编译出现了错误：
+```
+G:/SDK/ndk-bundle/build//../toolchains/x86_64-4.9/prebuilt/windows-x86_64/lib/gcc/x86_64-linux-android/4.9.x/../../../../x86_64-linux-android/bin\ld: warning: skipping incompatible G:/SDK/ndk-bundle/build//../platforms/android-21/arch-x86_64/usr/lib/libc.a while searching for c
+G:/SDK/ndk-bundle/build//../toolchains/x86_64-4.9/prebuilt/windows-x86_64/lib/gcc/x86_64-linux-android/4.9.x/../../../../x86_64-linux-android/bin\ld: error: treating warnings as errors
+clang++.exe: error: linker command failed with exit code 1 (use -v to see invocation)
+make: *** [G:/openSourceProject/NDKAlgo/app/src/main/obj/local/x86_64/libNDKMan.so] Error 1
+```
+
+出现了`error: treating warnings as errors`  
+处理方法，在mk文件中添加`LOCAL_DISABLE_FATAL_LINKER_WARNINGS=true`  
+再次编译即可
+
+我们可以使用宏定义简化打log的写法
+```c
+#define LOG_TAG    "rustApp"
+#define LOGV(...) __android_log_write(ANDROID_LOG_VERBOSE, LOG_TAG, __VA_ARGS__)
+#define LOGD(...) __android_log_print(ANDROID_LOG_DEBUG , LOG_TAG, __VA_ARGS__)  
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO , LOG_TAG, __VA_ARGS__)  
+#define LOGW(...) __android_log_print(ANDROID_LOG_WARN , LOG_TAG, __VA_ARGS__)  
+#define LOGE(...) __android_log_print(ANDROID_LOG_ERROR , LOG_TAG, __VA_ARGS__)  
+
+// 调用
+LOGV("This is my log");
+```

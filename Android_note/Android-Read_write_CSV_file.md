@@ -18,8 +18,34 @@ private static final String FILE_FOLDER =
 private static final String FILE_CSV = "about_data.csv";
 ```
 
+获取应用内的存储路径
+```java
+package com.rustfisher.anmediacodec;
+
+    File appDir = getFilesDir();
+    if (appDir.exists()) {
+        Log.d(TAG, "appDir.exists(): " + appDir.exists());
+        Log.d(TAG, "appDir.isDirectory(): " + appDir.isDirectory());
+        Log.d(TAG, "getFilesDir().getAbsolutePath(): " + getFilesDir().getAbsolutePath());
+        for (File c : appDir.listFiles()) {
+            if (c.isDirectory()) {
+                Log.d(TAG, c.getAbsolutePath() + File.separator);
+            } else {
+                Log.d(TAG, c.getAbsolutePath());
+            }
+        }
+    }
+
+// appDir.exists(): true
+// appDir.isDirectory(): true
+// getFilesDir().getAbsolutePath(): /data/data/com.rustfisher.anmediacodec/files
+// /data/data/com.rustfisher.anmediacodec/files/a.log
+// /data/data/com.rustfisher.anmediacodec/files/log_folder/
+```
+
 ## 写CSV文件
-使用`FileOutputStream`来向文件尾部添加数据
+使用`FileOutputStream`来向文件尾部添加数据  
+`FileOutputStream.write(byte[] data)`向文件流写入字节数据。
 
 ```java
 class WriteData2CSVThread extends Thread {

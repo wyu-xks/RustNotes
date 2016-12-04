@@ -119,7 +119,7 @@ public final class ContactEntity {
 
 ### 创建数据库管理者
 
-为了获取context，将application的实例开发接口
+为了获取context，将application的实例开放接口
 
 ```java
 public class RustApp extends Application {
@@ -145,8 +145,7 @@ public class RustApp extends Application {
 ```java
 /**
 * 数据库控制中心
-* 双重校验锁单例模式，
-* 在这里提供数据库的相关方法，调用方便
+* 双重校验锁单例模式，在这里提供数据库的相关方法，调用方便
 */
 public final class RustDBManager {
 
@@ -299,5 +298,5 @@ public class DBDemoActivity extends Activity {
 ## 结束
 这样封装的好处是：可以方便的调用数据库的相关方法。减少了重复代码。
 
-对于需要全局来管理的对象，可以尝试提供一个单例的接口。调用起来方便。或者放在服务里面。
+对于需要全局来管理的对象，可以尝试提供一个单例的接口。调用起来方便。或者放在服务里面。  
 比如音乐播放服务等等。
