@@ -38,6 +38,7 @@ MP4中的音频格式通常为AAC(audio/mp4a-latm)
 * `MediaMuxer`设置输出格式为`MUXER_OUTPUT_MPEG_4`，添加前面选定的格式，调用`start()`启动
 * `MediaExtractor`读取帧数据，不停地将帧数据和相关信息传入`MediaMuxer`
 * 最后停止并释放`MediaMuxer`和`MediaExtractor`
+最好放在子线程中操作。
 ```java
     /**
      * 提取视频
