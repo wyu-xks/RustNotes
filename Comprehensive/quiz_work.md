@@ -2,6 +2,7 @@
 title: Quiz
 date: 2015-03-06 19:41:46
 category: Tools
+toc: true
 ---
 
 ## Quiz
@@ -223,7 +224,109 @@ StringBuilder 字符串变量（非线程安全）
 
 * 属性动画 - Property Animation
     * 直接更改我们对象的属性。在上面提到的Tween Animation中，只是更改View的绘画效果而View的真实属性是不改变的
+    * 常用`Animator`类，`ValueAnimator`等
+        * `Animator`可加载动画资源文件
+        * `ValueAnimator`可使用内置估值器，添加监听`AnimatorUpdateListener`，在每次变化时修改view的属性
 
-#### 性能相关
+#### Android View绘制流程
 
-### 设计模式
+measure、layout、draw
+
+在onMeasure方法中View会对其所有的子元素执行measure过程，此时measure过程就从父容器"传递"到了子元素中，接着子元素会递归的对其子元素进行measure过程，如此反复完成对整个View树的遍历。
+onLayout与onDraw过程的执行流程与此类似。
+
+measure过程决定了View的测量宽高，这个过程结束后，就可以通过getMeasuredHeight和getMeasuredWidth获得View的测量宽高了；
+
+layout过程决定了View在父容器中的位置和View的最终显示宽高，getTop等方法可获取View的top等四个位置参数（View的左上角顶点的坐标为(left, top), 右下角顶点坐标为(right, bottom)），
+getWidth和getHeight可获得View的最终显示宽高（width = right - left；height = bottom - top）。 
+
+draw过程决定了View最终显示出来的样子，此过程完成后，View才会在屏幕上显示出来。
+
+https://www.cnblogs.com/absfree/p/5097239.html
+
+#### Android 图形显示流程 - 一张图片是怎么显示出来的
+
+* 第一步，得到位图（Bitmap）的内存数据，即从相应的图片文件解码，得到数据放并放到内存。 
+* 第二步，使用某种2D引擎，将位图内存按一定方式，渲染到可用于显示的图形内存（GraphicBuffer）上。 
+* 第三步，由一个中心显示控制器（Surfaceflinger），将相应的图形内存投放到显示屏（例如LCD）。
+
+#### Android 计算bitmap占用内存大小
+
+* 色彩格式，如果是 ARGB8888 那么就是一个像素4个字节，如果是 RGB565 那就是2个字节
+* 原始文件存放的资源目录类别（是 hdpi 还是 xxhdpi）；原始资源的 density 取决于资源存放的目录
+* 目标屏幕的密度
+
+例如：一张522*686的PNG 图片，放到 drawable-xxhdpi 目录下，在三星s6上加载，占用内存2547360B。
+其中 density 对应 xxhdpi 为480，targetDensity 对应三星s6的密度为640：
+```
+scaledWidth = int( 522 * 640 / 480f + 0.5) = int(696.5) = 696
+scaledHeight = int( 686 * 640 / 480f + 0.5) = int(915.16666…) = 915
+所占内存为 915 * 696 * 4 = 2547360
+```
+
+#### Android 触摸事件描述
+触摸事件分发：
+由根视图向子view分发。onInterceptTouchEvent 方法（ViewGroup才有）的返回值决定是否拦截触摸事件（true：拦截，false：不拦截）。如果 ViewGroup 拦截了触摸事件，那么其 onTouchEvent 就会被调用用来处理触摸事件。 
+
+触摸事件消费：
+onTouchEvent 方法的返回值决定是否处理完成触摸事件（true：已经处理完成，不需要给父 ViewGroup 处理，false：还没处理完成 ，需要传递给父 ViewGroup 处理）。
+
+#### MVC，MVP和MVVM简介
+
+MVC
+* View 接受用户交互请求
+* View 将请求转交给Controller
+* Controller 操作Model进行数据更新
+* 数据更新之后，Model通知View更新数据变化
+* View 更新变化数据
+
+方式：所有方式都是单向通信
+
+结构实现
+* View ：使用 Composite模式 
+* View和Controller：使用 Strategy模式 
+* Model和 View：使用 Observer模式同步信息
+
+使用  
+MVC中的View是可以直接访问Model的！从而，View里会包含Model信息，不可避免的还要包括一些业务逻辑。在MVC模型里，更关注的Model的不变，而同时有多个对Model的不同显示，及View。所以，在MVC模型里，Model不依赖于View，但是 View是依赖于Model的。不仅如此，因为有一些业务逻辑在View里实现了，导致要更改View也是比较困难的，至少那些业务逻辑是无法重用的。
+
+MVP  
+* View 接收用户交互请求
+* View 将请求转交给 Presenter
+* Presenter 操作Model进行数据更新
+* Model 通知Presenter数据发生变化
+* Presenter 更新View数据
+MVP的优势  
+* Model与View完全分离，修改互不影响
+* 更高效地使用，因为所有的逻辑交互都发生在一个地方 —— Presenter内部
+* 一个Preseter可用于多个View，而不需要改变Presenter的逻辑（因为View的变化总是比Model的变化频繁）。
+* 更便于测试。把逻辑放在Presenter中，就可以脱离用户接口来测试逻辑（单元测试）
+
+方式:各部分之间都是双向通信
+
+结构实现
+* View ：使用 Composite模式
+* View和Presenter：使用 Mediator模式
+* Model和Presenter：使用 Command模式同步信息
+
+MVC和MVP区别 MVP与MVC最大的一个区别就是：Model与View层之间倒底该不该通信（甚至双向通信）
+
+MVVM  
+* View 接收用户交互请求
+* View 将请求转交给ViewModel
+* ViewModel 操作Model数据更新
+* Model 更新完数据，通知ViewModel数据发生变化
+* ViewModel 更新View数据
+
+方式： 双向绑定。View/Model的变动，自动反映在 ViewModel，反之亦然。
+
+使用
+* 可以兼容你当下使用的 MVC/MVP 框架。
+* 增加你的应用的可测试性。
+* 配合一个绑定机制效果最好。
+
+MVVM模式和MVC模式一样，主要目的是分离视图（View）和模型（Model），有几大优点: 
+* 低耦合。View可以独立于Model变化和修改，一个ViewModel可以绑定到不同的”View”上，当View变化的时候Model可以不变，当Model变化的时候View也可以不变。 
+* 可重用性。你可以把一些视图逻辑放在一个ViewModel里面，让很多view重用这段视图逻辑。 
+* 独立开发。开发人员可以专注于业务逻辑和数据的开发（ViewModel），设计人员可以专注于页面设计，生成xml代码。 
+* 可测试。界面素来是比较难于测试的，而现在测试可以针对ViewModel来写。
