@@ -1,8 +1,8 @@
 ---
 title: Android 问题、参考资料汇总
 date: 2000-11-11 11:11:11
-category: Reading
-tag: [Reading]
+category: Android_note
+tag: [Android]
 toc: true
 ---
 
@@ -99,8 +99,9 @@ https://www.gitbook.com/book/izobs/android-framework-development-guide
 ### Android 音视频从入门到提高
 * [Android AudioRecord和AudioTrack实现音频PCM数据的采集和播放，并读写音频wav文件](https://rustfisher.github.io/2018/02/24/Android_note/Android-audio_AudioRecord_AudioTrack_pcm_wav/)
 * [Android 分别使用 SurfaceView 和 TextureView 来预览 Camera，获取NV21数据](https://rustfisher.github.io/2018/02/24/Android_note/Android-camera_nv21_surfaceview_textureview/)
-* 解释数字视频技术
-https://github.com/leandromoreira/digital_video_introduction/blob/master/simplified-chinese/README-cn.md
+* [Android 使用 MediaExtractor 和 MediaMuxer 解析和封装 mp4 文件](https://github.com/RustFisher/RustNotes/blob/master/Android_note/Android-media_MediaMuxer_MediaExtractor_mp4.md)
+* [Android 编解码 MediaCodec, Image](https://github.com/RustFisher/RustNotes/blob/master/Android_note/Android-MediaCodec_about.md)
+* 解释数字视频技术 https://github.com/leandromoreira/digital_video_introduction/blob/master/simplified-chinese/README-cn.md
 * 《雷霄骅的专栏》：http://blog.csdn.net/leixiaohua1020
 * 《Android音频开发》：http://ticktick.blog.51cto.com/823160/d-15
 * 《FFMPEG Tips》：http://ticktick.blog.51cto.com/823160/d-17
@@ -121,33 +122,3 @@ https://github.com/square/okio
 * alibaba VirtualLayout  
 https://github.com/alibaba/vlayout/blob/master/README-ch.md
 * Android MediaCodec stuff http://bigflake.com/mediacodec/
-
-# TODO
-- [ ] UI - view绘制流程 一张图片是怎么显示出来的
-- [ ] UI - bitmap占用内存大小
-- [ ] UI - 布局的选择，布局层级的选择
-- [ ] UI - 刷新卡顿的具体原因
-- [ ] UI - 触摸事件描述  解决触摸事件冲突
-- [ ] MVC，MVP与MVVM在Android中的应用
-- [ ] Listview性能调优
-- [ ] okhttp原理
-- [ ] Glide原理
-- [ ] Retrofit原理
-- [ ] Andorid 一张图片的显示过程
-
-## 多媒体相关
-
-- [ ] 4. 学习 Android 平台的 MediaExtractor 和 MediaMuxer API，知道如何解析和封装 mp4 文件
-- [ ] 6. 学习 Android 平台 OpenGL ES API，学习纹理绘制，能够使用 OpenGL 显示一张图片
-- [ ] 7. 学习 MediaCodec API，完成音频 AAC 硬编、硬解
-- [ ] 8. 学习 MediaCodec API，完成视频 H.264 的硬编、硬解
-- [ ] 9. 串联整个音视频录制流程，完成音视频的采集、编码、封包成 mp4 输出
-- [ ] 10. 串联整个音视频播放流程，完成 mp4 的解析、音视频的解码、播放和渲染
-- [ ] 11. 进一步学习 OpenGL，了解如何实现视频的剪裁、旋转、水印、滤镜，并学习 OpenGL 高级特性，如：VBO，VAO，FBO 等等
-- [ ] 12. 学习 Android 图形图像架构，能够使用 GLSurfaceviw 绘制 Camera 预览画面
-- [ ] 13. 深入研究音视频相关的网络协议，如 rtmp，hls，以及封包格式，如：flv，mp4
-- [ ] 14. 深入学习一些音视频领域的开源项目，如 webrtc，ffmpeg，ijkplayer，librtmp 等等
-- [ ] 15. 将 ffmpeg 库移植到 Android 平台，结合上面积累的经验，编写一款简易的音视频播放器
-- [ ] 16. 将 x264 库移植到 Android 平台，结合上面积累的经验，完成视频数据 H264 软编功能
-- [ ] 17. 将 librtmp 库移植到 Android 平台，结合上面积累的经验，完成 Android RTMP 推流功能
-- [ ] 18. 上面积累的经验，做一款短视频 APP，完成如：断点拍摄、添加水印、本地转码、视频剪辑、视频拼接、MV 特效等功能
